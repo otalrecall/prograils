@@ -5,12 +5,6 @@ export default class AddButton extends React.Component {
 		super(props);
 	}
 
-    renderError() {
-        if (!this.state.error) { return null; }
-
-        return <div style={{ color: 'red' }}>{this.state.error}</div>;
-    }
-
 	render() {
 		return (
 			<form onSubmit={this.handleCreate.bind(this)} className="input-group" >

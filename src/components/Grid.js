@@ -20,7 +20,7 @@ export default class Grid extends React.Component {
 		return (
 			<div className="container-fluid">
 				<div style={this.styleAddButton} className="row">
-					<div className="col-xs-12 col-sm 4 col-md-3">
+					<div className="col-xs-12 col-sm 3 col-md-3">
 						<AddButton 
 							text={this.props.addButtonText} 
 							createItem={this.props.createItem}/>
@@ -28,11 +28,11 @@ export default class Grid extends React.Component {
 				</div>
 
 				<section className="main row">
-					<aside style={this.styleAside} className="col-xs-12 col-sm 4 col-md-3">
+					<aside style={this.styleAside} className="col-xs-12 col-sm 3 col-md-3">
 						<List list={this.props.list}/>
 					</aside>
 
-					<article className="col-xs-12 col-sm-8 col-md-9">
+					<article className="col-xs-12 col-sm-9 col-md-9">
 						<Detail />
 					</article>
 				</section>
