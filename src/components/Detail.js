@@ -14,19 +14,81 @@ export default class Detail extends React.Component {
     	}
 
     	this.state = {
-    		isEditing: false
+    		isEditing: false,
+    		fullname: this.props.contact.fullname,
+    		phone: this.props.contact.phone,
+    		localPartEmail: this.getLocalPartEmail(this.props.contact.email),
+    		domainEmail: this.getDomainEmail(this.props.contact.email)
     	}
 	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			fullname: nextProps.contact.fullname,
+    		phone: nextProps.contact.phone,
+    		localPartEmail: this.getLocalPartEmail(nextProps.contact.email),
+    		domainEmail: this.getDomainEmail(nextProps.contact.email)
+		})
+	}
+
+	getFullName() {
+		console.log(this.props.contact.fullname);
+		return this.props.contact.fullname;
+	}
+
+	getLocalPartEmail(email) {
+		if (email) {
+			const emailArray = email.split("@");
+			if (emailArray.length == 2) {
+				return emailArray[0];
+			}
+		}
+	}
+
+	getDomainEmail(email) {
+		if (email) {
+			const emailArray = email.split("@");
+			if (emailArray.length== 2) {
+				return emailArray[1];
+			}
+		}
+	}
+
+	handleNameChange(event) {
+    	this.setState({
+    		fullname: event.target.value
+    	});
+    }
+
+    handleDomainEmailChange(event) {
+    	this.setState({
+    		domainEmail: event.target.value
+    	});
+    }
+
+    handleLocalPartEmailChange(event) {
+    	this.setState({
+    		localPartEmail: event.target.value
+    	});
+    }
+
+    handlePhoneChange(event) {
+    	this.setState({
+    		phone: event.target.value
+    	});
+    }
 
 	renderNameField() {
 		if (this.state.isEditing) {
 			return (
-				<input className="form-control" type="text" id="name" placeholder="Enter Name" />
+				<input className="form-control" type="text" onChange={this.handleNameChange.bind(this)}
+					value={this.state.fullname} placeholder="Enter Name" 
+					ref="editNameInput" />
 			);
 		}
 		else {
 			return (
-				<input className="form-control" type="text" id="name" value={this.props.name} readOnly="true" />
+				<input className="form-control" type="text" value={this.props.contact.fullname} readOnly="true" />
 			);
 		}
 	}
@@ -35,15 +97,17 @@ export default class Detail extends React.Component {
 		if (this.state.isEditing) {
 			return (
 				<div className="input-group">
-					<input className="form-control" type="text" id="email" placeholder="Enter Email" />
+					<input className="form-control" type="text" onChange={this.handleLocalPartEmailChange.bind(this)}
+						value={this.state.localPartEmail} placeholder="Enter Email" />
 					<div className="input-group-addon">@</div> 
-					<input className="form-control" type="text" />
+					<input className="form-control" onChange={this.handleDomainEmailChange.bind(this)}
+						value={this.state.domainEmail} type="text" />
 				</div>
 			);
 		}
 		else {
 			return (
-				<input className="form-control" type="text" id="email" value={this.props.email} readOnly="true"/>
+				<input className="form-control" type="text" value={this.props.contact.email} readOnly="true"/>
 			);
 		}
 	}
@@ -51,12 +115,13 @@ export default class Detail extends React.Component {
 	renderPhoneField() {
 		if (this.state.isEditing) {
 			return (
-				<input className="form-control" type="text" id="phone" placeholder="Enter Phone" />
+				<input className="form-control" type="text" onChange={this.handlePhoneChange.bind(this)}
+					value={this.state.phone} placeholder="Enter Phone" />
 			);
 		}
 		else {
 			return (
-				<input className="form-control" type="text" id="phone" value={this.props.phone} readOnly="true"/>
+				<input className="form-control" type="text" value={this.props.contact.phone} readOnly="true"/>
 			);
 		}
 	}
@@ -71,19 +136,19 @@ export default class Detail extends React.Component {
 						onClick={this.onEditClick.bind(this)}>Edit</button>
 				</div>
 				<div className="form-group">
-					<label className="control-label col-sm-1" htmlFor="name">Name:</label>
+					<label className="control-label col-sm-1">Name:</label>
 					<div className="col-sm-11">
 						{this.renderNameField()}
 					</div>
 				</div>
 				<div className="form-group">
-					<label className="control-label col-sm-1" htmlFor="email">Email:</label>
+					<label className="control-label col-sm-1">Email:</label>
 					<div className="col-sm-11">
 						{this.renderEmailField()}
 					</div>
 				</div>
 				<div className="form-group">
-					<label className="control-label col-sm-1" htmlFor="phone">Phone:</label>
+					<label className="control-label col-sm-1">Phone:</label>
 					<div className="col-sm-11">
 						{this.renderPhoneField()}
 					</div>

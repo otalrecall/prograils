@@ -7,8 +7,12 @@ export default class TableItem extends React.Component {
 
 	render() {
 		return (
-			<a href="#" className="list-group-item">
+			<a href="#" onClick={this.props.setItemDetails.bind(this, this.props.id)} 
+				className="list-group-item">
 			{this.props.fullname}</a>
 		);
 	}
+
+
+
 }

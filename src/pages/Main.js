@@ -9,7 +9,8 @@ export default class Main extends React.Component {
 		super(props);
 		this.getContacts = this.getContacts.bind(this);
 		this.state = {
-			contacts: ContactStore.getContacts()
+			contacts: ContactStore.getContacts(),
+			currentContact: ContactStore.getContacts()[0]
 		};
 	}
 
@@ -27,13 +28,21 @@ export default class Main extends React.Component {
 		});
 	}
 
+	setContactDetails(id) {
+		this.setState({
+			currentContact: ContactStore.getContact(id)
+		});
+	}
+
 	render() {
 		return (
 			<div>
 				<Header text="Address Book"/>
 				<Grid 
+					contact={this.state.currentContact}
 					addButtonText={"Add Contact"}
 					createItem={this.createContact.bind(this)}
+					setItemDetails={this.setContactDetails.bind(this)}
 					list={this.state.contacts}/>
 			</div>
 		);

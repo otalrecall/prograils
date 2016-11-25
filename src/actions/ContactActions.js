@@ -6,3 +6,10 @@ export function createContact(fullname) {
 		fullname
 	});
 }
+
+export function getContact(id) {
+	dispatcher.dispatch({
+		type: "GET_CONTACT",
+		id
+	});
+}
