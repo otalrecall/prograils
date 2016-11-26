@@ -36,7 +36,8 @@ export default class Grid extends React.Component {
 
 					<article className="col-xs-12 col-sm-9 col-md-9">
 						<Detail 
-							contact={this.props.contact}/>
+							contact={this.props.contact}
+							deleteItem={this.props.deleteItem}/>
 					</article>
 				</section>
 			</div>

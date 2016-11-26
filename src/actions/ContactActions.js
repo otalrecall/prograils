@@ -13,3 +13,10 @@ export function getContact(id) {
 		id
 	});
 }
+
+export function deleteContact(id) {
+	dispatcher.dispatch({
+		type: "DELETE_CONTACT",
+		id
+	});
+}

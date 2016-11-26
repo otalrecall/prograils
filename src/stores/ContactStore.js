@@ -27,7 +27,7 @@ class ContactStore extends EventEmitter {
 				phone: '663453871'
 			},
 			{
-				id: 123,
+				id: Date.now()+3,
 				rsaKey: 'ra3PjGViKUGiWZHp4qgCEZo6AE6SvVaT3cdU4rxakUahBI8xxzPxa0mBzFajYZOI5xaH',
 				fullname: 'William Eastwood',
 				email: 'william.eastwood@yahoo.com',
@@ -41,7 +41,7 @@ class ContactStore extends EventEmitter {
 	}
 
 	getContact(id) {
-		const contact = _.find(this.contacts, contact => contact.id === parseInt(id, 10));
+		const contact = _.find(this.contacts, contact => contact.id === id);
 		return contact;
 	}
 
@@ -76,6 +76,10 @@ class ContactStore extends EventEmitter {
 			}
 			case "GET_CONTACT": {
 				this.getContact(action.id);
+				break;
+			}
+			case "DELETE_CONTACT": {
+				this.deleteContact(action.id);
 				break;
 			}
 		}

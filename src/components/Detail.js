@@ -1,4 +1,5 @@
 import React from 'react';
+import DeleteButton from './DeleteButton';
 
 export default class Detail extends React.Component {
 	constructor(props) {
@@ -29,11 +30,6 @@ export default class Detail extends React.Component {
     		localPartEmail: this.getLocalPartEmail(nextProps.contact.email),
     		domainEmail: this.getDomainEmail(nextProps.contact.email)
 		})
-	}
-
-	getFullName() {
-		console.log(this.props.contact.fullname);
-		return this.props.contact.fullname;
 	}
 
 	getLocalPartEmail(email) {
@@ -163,10 +159,10 @@ export default class Detail extends React.Component {
 							style={this.styleDefaultButton} 
 							className="btn btn-default"
 							onClick={this.onCancelClick.bind(this)}>Cancel</button>
-						<button 
-							style={this.styleDefaultButton} 
-							className="btn btn-danger"
-							onClick={this.onDeleteClick.bind(this)}>Delete</button>
+						<DeleteButton 
+							idItem={this.props.contact.id}
+							styleButton={this.styleDefaultButton}
+							deleteItem={this.props.deleteItem}/>
 					</div>
 				</div>
 			</form>
@@ -181,12 +177,7 @@ export default class Detail extends React.Component {
 	}
 
 	onSaveClick(event) {
-
 		onCancelClick(event);
-	}
-
-	onDeleteClick(event) {
-		event.preventDefault();
 	}
 
 	onCancelClick(event) {

@@ -42,6 +42,7 @@ export default class Main extends React.Component {
 					contact={this.state.currentContact}
 					addButtonText={"Add Contact"}
 					createItem={this.createContact.bind(this)}
+					deleteItem={this.deleteContact.bind(this)}
 					setItemDetails={this.setContactDetails.bind(this)}
 					list={this.state.contacts}/>
 			</div>
@@ -50,5 +51,9 @@ export default class Main extends React.Component {
 
 	createContact(name) {
 		ContactActions.createContact(name);
+	}
+
+	deleteContact(id) {
+		ContactActions.deleteContact(id);
 	}
 }
