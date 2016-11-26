@@ -10,7 +10,7 @@ export default class Main extends React.Component {
 		this.getContacts = this.getContacts.bind(this);
 		this.state = {
 			contacts: ContactStore.getContacts(),
-			currentContact: ContactStore.getContacts()[0]
+			currentContact: null
 		};
 	}
 

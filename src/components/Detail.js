@@ -16,15 +16,18 @@ export default class Detail extends React.Component {
 
     	this.state = {
     		isEditing: false,
-    		fullname: this.props.contact.fullname,
-    		phone: this.props.contact.phone,
-    		localPartEmail: this.getLocalPartEmail(this.props.contact.email),
-    		domainEmail: this.getDomainEmail(this.props.contact.email)
+    		fullname: null,
+    		phone: null,
+    		localPartEmail: null,
+    		domainEmail: null
     	}
 	}
 
 	componentWillReceiveProps(nextProps) {
+		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'visible'}); 
+		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'hidden'});
 		this.setState({
+			isEditing: false,
 			fullname: nextProps.contact.fullname,
     		phone: nextProps.contact.phone,
     		localPartEmail: this.getLocalPartEmail(nextProps.contact.email),
@@ -123,50 +126,53 @@ export default class Detail extends React.Component {
 	}
 
 	render() {
-		return (
-			<form className="form-horizontal">
-				<div className="form-group">
-					<button 
-						style={this.styleEditButton} 
-						className="btn btn-default pull-right"
-						onClick={this.onEditClick.bind(this)}>Edit</button>
-				</div>
-				<div className="form-group">
-					<label className="control-label col-sm-1">Name:</label>
-					<div className="col-sm-11">
-						{this.renderNameField()}
-					</div>
-				</div>
-				<div className="form-group">
-					<label className="control-label col-sm-1">Email:</label>
-					<div className="col-sm-11">
-						{this.renderEmailField()}
-					</div>
-				</div>
-				<div className="form-group">
-					<label className="control-label col-sm-1">Phone:</label>
-					<div className="col-sm-11">
-						{this.renderPhoneField()}
-					</div>
-				</div>
-				<div className="form-group">
-					<div className="col-sm-offset-1 col-sm-11">
+		if(this.state.fullname) {
+			return (
+				<form className="form-horizontal">
+					<div className="form-group">
 						<button 
-							style={this.styleDefaultButton} 
-							className="btn btn-primary"
-							onClick={this.onSaveClick.bind(this)}>Save</button>
-						<button 
-							style={this.styleDefaultButton} 
-							className="btn btn-default"
-							onClick={this.onCancelClick.bind(this)}>Cancel</button>
-						<DeleteButton 
-							idItem={this.props.contact.id}
-							styleButton={this.styleDefaultButton}
-							deleteItem={this.props.deleteItem}/>
+							style={this.styleEditButton} 
+							className="btn btn-default pull-right"
+							onClick={this.onEditClick.bind(this)}>Edit</button>
 					</div>
-				</div>
-			</form>
-		);
+					<div className="form-group">
+						<label className="control-label col-sm-1">Name:</label>
+						<div className="col-sm-11">
+							{this.renderNameField()}
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-1">Email:</label>
+						<div className="col-sm-11">
+							{this.renderEmailField()}
+						</div>
+					</div>
+					<div className="form-group">
+						<label className="control-label col-sm-1">Phone:</label>
+						<div className="col-sm-11">
+							{this.renderPhoneField()}
+						</div>
+					</div>
+					<div className="form-group">
+						<div className="col-sm-offset-1 col-sm-11">
+							<button 
+								style={this.styleDefaultButton} 
+								className="btn btn-primary"
+								onClick={this.onSaveClick.bind(this)}>Save</button>
+							<button 
+								style={this.styleDefaultButton} 
+								className="btn btn-default"
+								onClick={this.onCancelClick.bind(this)}>Cancel</button>
+							<DeleteButton 
+								idItem={this.props.contact.id}
+								styleButton={this.styleDefaultButton}
+								deleteItem={this.props.deleteItem}/>
+						</div>
+					</div>
+				</form>
+			);
+		} 
+		else return null;
 	}
 
 	onEditClick(event) {
