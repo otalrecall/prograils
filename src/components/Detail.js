@@ -221,6 +221,10 @@ export default class Detail extends React.Component {
 	}
 
 	validateInput() {
+		if (this.state.contact.email == "@") {
+			this.state.contact.email = "";
+		}
+
 		if ( !this.state.contact.fullname ) {
 			return "You should write a Name."
 		}

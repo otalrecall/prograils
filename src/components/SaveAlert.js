@@ -8,7 +8,7 @@ export default class SaveAlert extends React.Component {
 	render() {
 		return (
 			<div className="alert alert-danger" style={this.props.styleAlert}>
-				  <strong>Error!</strong> {this.props.text}
+				<strong>Error!</strong> {this.props.text}
 			</div>
 		);
 	}
