@@ -15,7 +15,10 @@ export default class SaveButton extends React.Component {
 
 	onSaveClick(event) {
 		event.preventDefault();
+
 		const alertText = this.props.validateInput();
+
+		// If there is an alert text, Alert is shown and item not updated
 		if (alertText) {
 			this.props.showAlert(alertText);
 			return;

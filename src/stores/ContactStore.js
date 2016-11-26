@@ -1,39 +1,12 @@
 import { EventEmitter } from "events";
 import dispatcher from "../dispatcher";
+import keypair from "keypair";
+import data from "../static/data/data";
 
 class ContactStore extends EventEmitter {
 	constructor() {
 		super();
-		this.contacts = [
-			{
-				id: Date.now(),
-				rsaKey: 'xbvyVDX6w9lLR1R5xbpOXNdJcE9GSXHlgv5ov9ccsGak0HxborDivBNGrbCvLgbtjpn',
-				fullname: 'Daniel Otal',
-				email: 'otalrecall@gmail.com',
-				phone: '675489312'
-			},
-			{
-				id: Date.now()+1,
-				rsaKey: 'ra3PjGViKUGiWZHp4qgCEZo6AE6SvVaT3cdU4rxakUahBI8xxzPxa0mBzFajYZOI5xaF',
-				fullname: 'John Smith',
-				email: 'johnsmith@gmail.com',
-				phone: '643429718'
-			},
-			{
-				id: Date.now()+2,
-				rsaKey: 'ra3PjGViKUGiWZHp4qgCEZo6AE6SvVaT3cdU4rxakUahBI8xxzPxa0mBzFajYZOI5xaG',
-				fullname: 'Emily Waters',
-				email: 'emily567@outlook.com',
-				phone: '663453871'
-			},
-			{
-				id: Date.now()+3,
-				rsaKey: 'ra3PjGViKUGiWZHp4qgCEZo6AE6SvVaT3cdU4rxakUahBI8xxzPxa0mBzFajYZOI5xaH',
-				fullname: 'William Eastwood',
-				email: 'william.eastwood@yahoo.com',
-				phone: '654601034'
-			}
-		]
+		this.contacts = data;
 	}
 
 	getContacts() {
@@ -46,9 +19,15 @@ class ContactStore extends EventEmitter {
 	}
 
 	createContact(fullname) {
+		const key = keypair({bits:64});
+		console.log(key);
+		console.log(key.public);
+		console.log(key.private);
 		this.contacts.push({
 			id: Date.now(),
-			fullname: fullname
+			fullname: fullname,
+			rsaPublic: key.public,
+			rsaPrivate: key.private
 		});
 		this.emit("changeContacts");
 	}

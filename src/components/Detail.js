@@ -138,6 +138,12 @@ export default class Detail extends React.Component {
 		}
 	}
 
+	renderRSAField() {
+		return (
+			<input className="form-control" type="text" value={this.props.contact.rsaPublic} readOnly="true" />
+		);
+	}
+
 	render() {
 		return (
 			<form className="form-horizontal">
@@ -163,6 +169,12 @@ export default class Detail extends React.Component {
 					<label className="control-label col-sm-1">Phone:</label>
 					<div className="col-sm-11">
 						{this.renderPhoneField()}
+					</div>
+				</div>
+				<div className="form-group">
+					<label className="control-label col-sm-1">RSA:</label>
+					<div className="col-sm-11">
+						{this.renderRSAField()}
 					</div>
 				</div>
 				<div className="form-group">
@@ -194,6 +206,8 @@ export default class Detail extends React.Component {
 
 	onEditClick(event) {
 		event.preventDefault();
+
+		// Show Save / Cancel / Delete buttons
 		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'hidden'}); 
 		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'visible'}); 
 		this.setState( { isEditing: true } );
@@ -201,25 +215,37 @@ export default class Detail extends React.Component {
 
 	onCancelClick(event) {
 		event.preventDefault();
+
+		// Show Edit button
 		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'visible'}); 
 		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'hidden'});
 		this.styleAlert = Object.assign({}, this.styleAlert, {visibility:'hidden'});
+
 		this.setState({ 
 			isEditing: false,
 			contact: Object.assign({}, this.props.contact)
 		});
 	}
 
+	/**
+	 * Validates email if it is correctly formatted
+	**/
 	validateEmail(email) {
     	const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     	return reg.test(email);
 	}
 
+	/**
+	 * Validates phone if it is correctly formatted
+	**/
 	validatePhone(phone) {
 		const reg = /\+?[0-9]{3}-?[0-9]{6,12}$/;
 		return reg.test(phone);
 	}
 
+	/**
+	 * Validates every input before saving
+	**/
 	validateInput() {
 		if (this.state.contact.email == "@") {
 			this.state.contact.email = "";

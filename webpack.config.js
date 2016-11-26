@@ -14,7 +14,7 @@ module.exports = {
     },
     resolve: {
         modulesDirectories: ['node_modules', 'src'],
-        extensions: ['', '.js']
+        extensions: ['', '.js', '.json']
     },
     devServer: {
         historyApiFallback: true
@@ -53,6 +53,10 @@ module.exports = {
         {
             test: /\.svg(\?v=\d+\.\d+\.\d+)?$/, 
             loader: 'url?limit=10000&mimetype=image/svg+xml'
+        },
+        {
+            test: /\.json$/,
+            loader: "json-loader"
         }
         ]
     },

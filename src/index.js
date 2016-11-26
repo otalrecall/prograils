@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 import { Router, Route, browserHistory, IndexRedirect } from "react-router";
 import Main from './pages/Main';
 import Bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
-import Styles from './styles.css';
+import Styles from './static/css/styles.css';
 
 ReactDOM.render (
 	<Router history={browserHistory}>
