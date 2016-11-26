@@ -29,24 +29,30 @@ export default class Detail extends React.Component {
 		this.setState({
 			isEditing: false,
 			fullname: nextProps.contact.fullname,
-    		phone: nextProps.contact.phone,
-    		localPartEmail: this.getLocalPartEmail(nextProps.contact.email),
-    		domainEmail: this.getDomainEmail(nextProps.contact.email)
+    		phone: this.getPhone(nextProps.contact),
+    		localPartEmail: this.getLocalPartEmail(nextProps.contact),
+    		domainEmail: this.getDomainEmail(nextProps.contact)
 		})
 	}
 
-	getLocalPartEmail(email) {
-		if (email) {
-			const emailArray = email.split("@");
+	getPhone(contact) {
+		if (contact && "phone" in contact) {
+			return contact.phone;
+		}
+	}
+
+	getLocalPartEmail(contact) {
+		if (contact && "email" in contact) {
+			const emailArray = contact.email.split("@");
 			if (emailArray.length == 2) {
 				return emailArray[0];
 			}
 		}
 	}
 
-	getDomainEmail(email) {
-		if (email) {
-			const emailArray = email.split("@");
+	getDomainEmail(contact) {
+		if (contact && "email" in contact) {
+			const emailArray = contact.email.split("@");
 			if (emailArray.length== 2) {
 				return emailArray[1];
 			}
@@ -126,53 +132,50 @@ export default class Detail extends React.Component {
 	}
 
 	render() {
-		if(this.state.fullname) {
-			return (
-				<form className="form-horizontal">
-					<div className="form-group">
+		return (
+			<form className="form-horizontal">
+				<div className="form-group">
+					<button 
+						style={this.styleEditButton} 
+						className="btn btn-default pull-right"
+						onClick={this.onEditClick.bind(this)}>Edit</button>
+				</div>
+				<div className="form-group">
+					<label className="control-label col-sm-1">Name:</label>
+					<div className="col-sm-11">
+						{this.renderNameField()}
+					</div>
+				</div>
+				<div className="form-group">
+					<label className="control-label col-sm-1">Email:</label>
+					<div className="col-sm-11">
+						{this.renderEmailField()}
+					</div>
+				</div>
+				<div className="form-group">
+					<label className="control-label col-sm-1">Phone:</label>
+					<div className="col-sm-11">
+						{this.renderPhoneField()}
+					</div>
+				</div>
+				<div className="form-group">
+					<div className="col-sm-offset-1 col-sm-11">
 						<button 
-							style={this.styleEditButton} 
-							className="btn btn-default pull-right"
-							onClick={this.onEditClick.bind(this)}>Edit</button>
+							style={this.styleDefaultButton} 
+							className="btn btn-primary"
+							onClick={this.onSaveClick.bind(this)}>Save</button>
+						<button 
+							style={this.styleDefaultButton} 
+							className="btn btn-default"
+							onClick={this.onCancelClick.bind(this)}>Cancel</button>
+						<DeleteButton 
+							idItem={this.props.contact.id}
+							styleButton={this.styleDefaultButton}
+							deleteItem={this.props.deleteItem}/>
 					</div>
-					<div className="form-group">
-						<label className="control-label col-sm-1">Name:</label>
-						<div className="col-sm-11">
-							{this.renderNameField()}
-						</div>
-					</div>
-					<div className="form-group">
-						<label className="control-label col-sm-1">Email:</label>
-						<div className="col-sm-11">
-							{this.renderEmailField()}
-						</div>
-					</div>
-					<div className="form-group">
-						<label className="control-label col-sm-1">Phone:</label>
-						<div className="col-sm-11">
-							{this.renderPhoneField()}
-						</div>
-					</div>
-					<div className="form-group">
-						<div className="col-sm-offset-1 col-sm-11">
-							<button 
-								style={this.styleDefaultButton} 
-								className="btn btn-primary"
-								onClick={this.onSaveClick.bind(this)}>Save</button>
-							<button 
-								style={this.styleDefaultButton} 
-								className="btn btn-default"
-								onClick={this.onCancelClick.bind(this)}>Cancel</button>
-							<DeleteButton 
-								idItem={this.props.contact.id}
-								styleButton={this.styleDefaultButton}
-								deleteItem={this.props.deleteItem}/>
-						</div>
-					</div>
-				</form>
-			);
-		} 
-		else return null;
+				</div>
+			</form>
+		);
 	}
 
 	onEditClick(event) {

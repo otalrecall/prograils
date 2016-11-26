@@ -55,5 +55,8 @@ export default class Main extends React.Component {
 
 	deleteContact(id) {
 		ContactActions.deleteContact(id);
+		this.setState({
+			currentContact: null
+		})
 	}
 }

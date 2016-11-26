@@ -16,6 +16,16 @@ export default class Grid extends React.Component {
     	}
 	}
 
+	renderDetailContact() {
+		if (this.props.contact) {
+			return (
+				<Detail 
+					contact={this.props.contact}
+					deleteItem={this.props.deleteItem}/>
+			);
+		}
+	}
+
 	render() {
 		return (
 			<div className="container-fluid">
@@ -35,9 +45,7 @@ export default class Grid extends React.Component {
 					</aside>
 
 					<article className="col-xs-12 col-sm-9 col-md-9">
-						<Detail 
-							contact={this.props.contact}
-							deleteItem={this.props.deleteItem}/>
+						{this.renderDetailContact()}
 					</article>
 				</section>
 			</div>
