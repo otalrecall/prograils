@@ -1,5 +1,6 @@
 import React from 'react';
 import DeleteButton from './DeleteButton';
+import SaveButton from './SaveButton';
 
 export default class Detail extends React.Component {
 	constructor(props) {
@@ -7,38 +8,27 @@ export default class Detail extends React.Component {
 		this.styleDefaultButton = {
 			marginRight: '10px',
 			visibility: 'hidden'
-    	}
+    	};
     	this.styleEditButton = {
     		marginTop: '10px',
     		marginRight: '15px',
 			visibility: 'visible'
-    	}
+    	};
 
     	this.state = {
     		isEditing: false,
-    		fullname: null,
-    		phone: null,
-    		localPartEmail: null,
-    		domainEmail: null
-    	}
+    		contact: Object.assign({}, this.props.contact)
+    	};
 	}
 
 	componentWillReceiveProps(nextProps) {
+		console.log("receiving new props");
 		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'visible'}); 
 		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'hidden'});
 		this.setState({
 			isEditing: false,
-			fullname: nextProps.contact.fullname,
-    		phone: this.getPhone(nextProps.contact),
-    		localPartEmail: this.getLocalPartEmail(nextProps.contact),
-    		domainEmail: this.getDomainEmail(nextProps.contact)
+			contact: Object.assign({}, nextProps.contact)
 		})
-	}
-
-	getPhone(contact) {
-		if (contact && "phone" in contact) {
-			return contact.phone;
-		}
 	}
 
 	getLocalPartEmail(contact) {
@@ -60,26 +50,36 @@ export default class Detail extends React.Component {
 	}
 
 	handleNameChange(event) {
+		let contact = this.state.contact;
+		contact.fullname = event.target.value;
     	this.setState({
-    		fullname: event.target.value
+    		contact: contact
     	});
     }
 
     handleDomainEmailChange(event) {
+    	let contact = this.state.contact;
+    	const localPartEmail = this.getLocalPartEmail(contact); 
+		contact.email = localPartEmail + "@" + event.target.value;
     	this.setState({
-    		domainEmail: event.target.value
+    		contact: contact
     	});
     }
 
     handleLocalPartEmailChange(event) {
+    	let contact = this.state.contact;
+    	const domainEmail = this.getDomainEmail(contact); 
+		contact.email = event.target.value + "@" + domainEmail;
     	this.setState({
-    		localPartEmail: event.target.value
+    		contact: contact
     	});
     }
 
     handlePhoneChange(event) {
+		let contact = this.state.contact;
+		contact.phone = event.target.value;
     	this.setState({
-    		phone: event.target.value
+    		contact: contact
     	});
     }
 
@@ -87,7 +87,7 @@ export default class Detail extends React.Component {
 		if (this.state.isEditing) {
 			return (
 				<input className="form-control" type="text" onChange={this.handleNameChange.bind(this)}
-					value={this.state.fullname} placeholder="Enter Name" 
+					value={this.state.contact.fullname} placeholder="Enter Name" 
 					ref="editNameInput" />
 			);
 		}
@@ -103,10 +103,10 @@ export default class Detail extends React.Component {
 			return (
 				<div className="input-group">
 					<input className="form-control" type="text" onChange={this.handleLocalPartEmailChange.bind(this)}
-						value={this.state.localPartEmail} placeholder="Enter Email" />
+						value={this.getLocalPartEmail(this.state.contact)} placeholder="Enter Email" />
 					<div className="input-group-addon">@</div> 
 					<input className="form-control" onChange={this.handleDomainEmailChange.bind(this)}
-						value={this.state.domainEmail} type="text" />
+						value={this.getDomainEmail(this.state.contact)} type="text" />
 				</div>
 			);
 		}
@@ -121,7 +121,7 @@ export default class Detail extends React.Component {
 		if (this.state.isEditing) {
 			return (
 				<input className="form-control" type="text" onChange={this.handlePhoneChange.bind(this)}
-					value={this.state.phone} placeholder="Enter Phone" />
+					value={this.state.contact.phone} placeholder="Enter Phone" />
 			);
 		}
 		else {
@@ -160,10 +160,10 @@ export default class Detail extends React.Component {
 				</div>
 				<div className="form-group">
 					<div className="col-sm-offset-1 col-sm-11">
-						<button 
-							style={this.styleDefaultButton} 
-							className="btn btn-primary"
-							onClick={this.onSaveClick.bind(this)}>Save</button>
+						<SaveButton 
+							styleButton={this.styleDefaultButton}
+							updateItem={this.props.updateItem}
+							item={this.state.contact}/>
 						<button 
 							style={this.styleDefaultButton} 
 							className="btn btn-default"
@@ -185,14 +185,13 @@ export default class Detail extends React.Component {
 		this.setState( { isEditing: true } );
 	}
 
-	onSaveClick(event) {
-		onCancelClick(event);
-	}
-
 	onCancelClick(event) {
 		event.preventDefault();
 		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'visible'}); 
 		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'hidden'});
-		this.setState( { isEditing: false } );
+		this.setState({ 
+			isEditing: false,
+			contact: Object.assign({}, this.props.contact)
+		});
 	}
 }

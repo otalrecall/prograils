@@ -7,16 +7,16 @@ export function createContact(fullname) {
 	});
 }
 
-export function getContact(id) {
-	dispatcher.dispatch({
-		type: "GET_CONTACT",
-		id
-	});
-}
-
 export function deleteContact(id) {
 	dispatcher.dispatch({
 		type: "DELETE_CONTACT",
 		id
+	});
+}
+
+export function updateContact(contact) {
+	dispatcher.dispatch({
+		type: "UPDATE_CONTACT",
+		contact
 	});
 }

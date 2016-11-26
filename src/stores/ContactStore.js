@@ -32,7 +32,7 @@ class ContactStore extends EventEmitter {
 				fullname: 'William Eastwood',
 				email: 'william.eastwood@yahoo.com',
 				phone: '654601034'
-			},
+			}
 		]
 	}
 
@@ -43,11 +43,6 @@ class ContactStore extends EventEmitter {
 	getContact(id) {
 		const contact = _.find(this.contacts, contact => contact.id === id);
 		return contact;
-	}
-
-	getContactFullName(id) {
-		const contact = _.find(this.contacts, contact => contact.id === parseInt(id, 10));
-		return contact.fullname;
 	}
 
 	createContact(fullname) {
@@ -63,23 +58,24 @@ class ContactStore extends EventEmitter {
 		this.emit("changeContacts");
 	}
 
+	updateContact(contactToUpdate) {
+		let contact = _.find(this.contacts, contact => contact.id === contactToUpdate.id);
+		contact = contactToUpdate;
+		this.emit("changeContacts");
+	}
 
 	handleActions(action) {
 		switch(action.type) {
-			case "GET_CONTACTS": {
-				this.getContacts();
-				break;
-			}
 			case "CREATE_CONTACT": {
 				this.createContact(action.fullname);
 				break;
 			}
-			case "GET_CONTACT": {
-				this.getContact(action.id);
-				break;
-			}
 			case "DELETE_CONTACT": {
 				this.deleteContact(action.id);
+				break;
+			}
+			case "UPDATE_CONTACT": {
+				this.updateContact(action.contact);
 				break;
 			}
 		}

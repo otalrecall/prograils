@@ -21,7 +21,8 @@ export default class Grid extends React.Component {
 			return (
 				<Detail 
 					contact={this.props.contact}
-					deleteItem={this.props.deleteItem}/>
+					deleteItem={this.props.deleteItem}
+					updateItem={this.props.updateItem}/>
 			);
 		}
 	}
