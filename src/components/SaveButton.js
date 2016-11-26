@@ -15,6 +15,11 @@ export default class SaveButton extends React.Component {
 
 	onSaveClick(event) {
 		event.preventDefault();
-		this.props.updateItem(this.props.contact)
+		const alertText = this.props.validateInput();
+		if (alertText) {
+			this.props.showAlert(alertText);
+			return;
+		}
+		this.props.updateItem(this.props.item);
 	}
 }

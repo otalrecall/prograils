@@ -1,5 +1,6 @@
 import { EventEmitter } from "events";
 import dispatcher from "../dispatcher";
+import update from 'immutability-helper';
 
 class ContactStore extends EventEmitter {
 	constructor() {
@@ -58,9 +59,11 @@ class ContactStore extends EventEmitter {
 		this.emit("changeContacts");
 	}
 
-	updateContact(contactToUpdate) {
-		let contact = _.find(this.contacts, contact => contact.id === contactToUpdate.id);
-		contact = contactToUpdate;
+	updateContact(newContact) {
+		const contact = _.find(this.contacts, contact => contact.id === newContact.id);
+		contact.fullname = newContact.fullname;
+		contact.email = (newContact.email !== undefined) ? newContact.email : "";
+		contact.phone = (newContact.phone !== undefined) ?newContact.phone : "";
 		this.emit("changeContacts");
 	}
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import DeleteButton from './DeleteButton';
 import SaveButton from './SaveButton';
+import SaveAlert from './SaveAlert';
 
 export default class Detail extends React.Component {
 	constructor(props) {
@@ -14,17 +15,22 @@ export default class Detail extends React.Component {
     		marginRight: '15px',
 			visibility: 'visible'
     	};
+    	this.styleAlert = {
+    		marginTop: '10',
+    		visibility: 'hidden'
+    	};
 
     	this.state = {
     		isEditing: false,
-    		contact: Object.assign({}, this.props.contact)
+    		contact: Object.assign({}, this.props.contact),
+    		alertText: null
     	};
 	}
 
 	componentWillReceiveProps(nextProps) {
-		console.log("receiving new props");
 		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'visible'}); 
 		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'hidden'});
+		this.styleAlert = Object.assign({}, this.styleAlert, {visibility:'hidden'});
 		this.setState({
 			isEditing: false,
 			contact: Object.assign({}, nextProps.contact)
@@ -38,6 +44,7 @@ export default class Detail extends React.Component {
 				return emailArray[0];
 			}
 		}
+		return "";
 	}
 
 	getDomainEmail(contact) {
@@ -47,13 +54,14 @@ export default class Detail extends React.Component {
 				return emailArray[1];
 			}
 		}
+		return "";
 	}
 
 	handleNameChange(event) {
 		let contact = this.state.contact;
 		contact.fullname = event.target.value;
     	this.setState({
-    		contact: contact
+    		contact
     	});
     }
 
@@ -62,7 +70,7 @@ export default class Detail extends React.Component {
     	const localPartEmail = this.getLocalPartEmail(contact); 
 		contact.email = localPartEmail + "@" + event.target.value;
     	this.setState({
-    		contact: contact
+    		contact
     	});
     }
 
@@ -71,7 +79,7 @@ export default class Detail extends React.Component {
     	const domainEmail = this.getDomainEmail(contact); 
 		contact.email = event.target.value + "@" + domainEmail;
     	this.setState({
-    		contact: contact
+    		contact
     	});
     }
 
@@ -79,7 +87,7 @@ export default class Detail extends React.Component {
 		let contact = this.state.contact;
 		contact.phone = event.target.value;
     	this.setState({
-    		contact: contact
+    		contact
     	});
     }
 
@@ -87,8 +95,7 @@ export default class Detail extends React.Component {
 		if (this.state.isEditing) {
 			return (
 				<input className="form-control" type="text" onChange={this.handleNameChange.bind(this)}
-					value={this.state.contact.fullname} placeholder="Enter Name" 
-					ref="editNameInput" />
+					value={this.state.contact.fullname} placeholder="Enter Name"/>
 			);
 		}
 		else {
@@ -163,7 +170,9 @@ export default class Detail extends React.Component {
 						<SaveButton 
 							styleButton={this.styleDefaultButton}
 							updateItem={this.props.updateItem}
-							item={this.state.contact}/>
+							item={this.state.contact}
+							validateInput={this.validateInput.bind(this)}
+							showAlert={this.showAlert.bind(this)}/>
 						<button 
 							style={this.styleDefaultButton} 
 							className="btn btn-default"
@@ -172,6 +181,11 @@ export default class Detail extends React.Component {
 							idItem={this.props.contact.id}
 							styleButton={this.styleDefaultButton}
 							deleteItem={this.props.deleteItem}/>
+					</div>
+					<div className="col-sm-offset-1 col-sm-11">
+						<SaveAlert 
+							styleAlert={this.styleAlert}
+							text={this.state.alertText}/>
 					</div>
 				</div>
 			</form>
@@ -189,9 +203,40 @@ export default class Detail extends React.Component {
 		event.preventDefault();
 		this.styleEditButton = Object.assign({}, this.styleEditButton, {visibility:'visible'}); 
 		this.styleDefaultButton = Object.assign({}, this.styleDefaultButton, {visibility:'hidden'});
+		this.styleAlert = Object.assign({}, this.styleAlert, {visibility:'hidden'});
 		this.setState({ 
 			isEditing: false,
 			contact: Object.assign({}, this.props.contact)
 		});
+	}
+
+	validateEmail(email) {
+    	const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    	return reg.test(email);
+	}
+
+	validatePhone(phone) {
+		const reg = /\+?[0-9]{3}-?[0-9]{6,12}$/;
+		return reg.test(phone);
+	}
+
+	validateInput() {
+		if ( !this.state.contact.fullname ) {
+			return "You should write a Name."
+		}
+		else if ( this.state.contact.email && !this.validateEmail(this.state.contact.email) ) {
+			return "Write a valid Email Address."
+		}
+		else if ( this.state.contact.phone && !this.validatePhone(this.state.contact.phone) ) {
+			return "Write a valid Phone Number."
+		}
+		return null;
+	}
+
+	showAlert(text) {
+		this.styleAlert = Object.assign({}, this.styleAlert, {visibility: 'visible'});
+    	this.setState({
+    		alertText: text
+    	});
 	}
 }
