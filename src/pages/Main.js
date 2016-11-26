@@ -10,7 +10,7 @@ export default class Main extends React.Component {
 		this.getContacts = this.getContacts.bind(this);
 		this.state = {
 			contacts: ContactStore.getContacts(),
-			currentContact: null
+			currentContact: ContactStore.getContact(this.props.params.id)
 		};
 	}
 
@@ -25,12 +25,6 @@ export default class Main extends React.Component {
 	getContacts() {
 		this.setState({
 			contacts: ContactStore.getContacts()
-		});
-	}
-
-	setContactDetails(id) {
-		this.setState({
-			currentContact: ContactStore.getContact(id)
 		});
 	}
 
@@ -59,9 +53,16 @@ export default class Main extends React.Component {
 		this.setState({
 			currentContact: null
 		})
+		this.props.history.push('/');
 	}
 
 	updateContact(contact) {
 		ContactActions.updateContact(contact);
+	}
+
+	setContactDetails(id) {
+		this.setState({
+			currentContact: ContactStore.getContact(id)
+		});
 	}
 }

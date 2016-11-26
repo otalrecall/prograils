@@ -10,6 +10,7 @@ import Styles from './styles.css';
 ReactDOM.render (
 	<Router history={browserHistory}>
 		<Route path="/" component={Main}></Route>
+		<Route path="#/contacts/:id" component={Main}></Route>
 	</Router>, 
 	document.getElementById('app')
 );

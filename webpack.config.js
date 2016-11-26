@@ -16,6 +16,9 @@ module.exports = {
         modulesDirectories: ['node_modules', 'src'],
         extensions: ['', '.js']
     },
+    devServer: {
+        historyApiFallback: true
+    },
     module: {
         loaders: [
         {
