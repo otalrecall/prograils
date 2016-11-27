@@ -20,9 +20,6 @@ class ContactStore extends EventEmitter {
 
 	createContact(fullname) {
 		const key = keypair({bits:64});
-		console.log(key);
-		console.log(key.public);
-		console.log(key.private);
 		this.contacts.push({
 			id: Date.now(),
 			fullname: fullname,
